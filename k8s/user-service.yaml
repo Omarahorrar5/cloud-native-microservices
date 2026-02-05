@@ -1,0 +1,42 @@
+# Deployment: Manages the pods
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1  # Number of pod replicas
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: user-service:latest  # Same as your Docker image
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SERVER_PORT
+          value: "8081"
+        livenessProbe:  # Health check
+          httpGet:
+            path: /api/users
+            port: 8081
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+# Service: Exposes the deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-service
+  ports:
+  - port: 8081      # Service port (cluster internal)
+    targetPort: 8081 # Container port
+  type: ClusterIP   # Internal only
