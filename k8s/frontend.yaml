@@ -15,6 +15,7 @@ spec:
       containers:
       - name: frontend
         image: frontend:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 80
 ---
@@ -26,7 +27,7 @@ spec:
   selector:
     app: frontend
   ports:
-  - port: 80      # Service port
-    targetPort: 80 # Container port
-    nodePort: 30000  # Required for NodePort type
-  type: NodePort   # Externally accessible
+  - port: 80
+    targetPort: 80
+    nodePort: 30000
+  type: NodePort
