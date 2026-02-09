@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8081/api/users';
+const MINIKUBE_IP = '192.168.58.2';
+
+const API_BASE_URL = `http://${MINIKUBE_IP}:30001/api/users`;
 
 const UserService = {
   getAllUsers: async () => {
